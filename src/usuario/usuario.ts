@@ -2,6 +2,7 @@
 import { AllowNull, AutoIncrement, Column, DataType, HasOne, PrimaryKey, Table, Unique } from "sequelize-typescript";
 import { Nutricionista } from "../nutricionista/nutricionista";
 import { Model } from "sequelize-typescript";
+import { Paciente } from "../paciente/paciente";
 
 
 export enum TipoUsuario {
@@ -53,7 +54,7 @@ export class Usuario extends Model<Usuario> {
     @HasOne(() => Nutricionista)
     nutricionista!: Nutricionista;
 
-   // @HasOne(() => Paciente)
-   // paciente: Paciente;
+    @HasOne(() => Paciente)
+    paciente!: Paciente;
 
 }
