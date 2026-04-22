@@ -1,6 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { SequelizeModuleOptions, SequelizeOptionsFactory } from '@nestjs/sequelize';
+import { Usuario } from '../usuario/usuario';
+import { Paciente } from '../paciente/paciente';
+import { Nutricionista } from '../nutricionista/nutricionista';
 
 
 @Injectable()
@@ -20,7 +23,7 @@ export class SequelizeConfigService implements SequelizeOptionsFactory {
             database: this.configService.get<string>('DB_DATABASE'),
             autoLoadModels: true,
             synchronize: true,
-            models: []
+            models: [Usuario, Paciente, Nutricionista]
         }
     }
 
