@@ -9,12 +9,17 @@ export class UsuarioService {
         @InjectModel(Usuario) private usuarioModel: typeof Usuario,
     ){}
 
+    //criptografando senha
     async create(createUsuarioDto: CreateUsuarioDto){
-        const usuario = {
-            ...createUsuarioDto,
-            senha:  await bcrypt.hash(createUsuarioDto.senha, 10),
-        };
+    const usuarioData = {
+    ...createUsuarioDto,
+    senha: await bcrypt.hash(createUsuarioDto.senha, 10),
+    } as any;  // Ou InferCreationAttributes<Usuario>
 
-        return usuario;
-    }
+    const createdUsuario = await this.usuarioModel.create(usuarioData);
+    return{
+        ...createdUsuario,
+        senha: undefined,
+    };
+}
 }

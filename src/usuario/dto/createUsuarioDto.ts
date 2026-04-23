@@ -11,7 +11,6 @@ email!:string;
 @IsString()
 @MinLength(4)
 @MaxLength(20)
-
 //Usando regex para definir que senha deve ter letra Maiúscula, minúscula e número
 @Matches(/((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/, {
     message: 'Senha fraca',
