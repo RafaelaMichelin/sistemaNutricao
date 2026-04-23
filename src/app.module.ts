@@ -9,6 +9,7 @@ import { UsuarioService } from './usuario/usuario.service';
 import { Usuario } from './usuario/usuario';
 import { Nutricionista } from './nutricionista/nutricionista';
 import { Paciente } from './paciente/paciente';
+import { AuthModule } from './auth/auth.module';
 
 
 @Module({
@@ -20,7 +21,8 @@ import { Paciente } from './paciente/paciente';
       imports: [ConfigModule],
       useClass: SequelizeConfigService,
     }),
-    SequelizeModule.forFeature([Usuario, Paciente, Nutricionista]),    //adicionar os models 
+    SequelizeModule.forFeature([Usuario, Paciente, Nutricionista]),
+    AuthModule,    //adicionar os models 
   ],
 
   controllers: [AppController, UsuarioController],
