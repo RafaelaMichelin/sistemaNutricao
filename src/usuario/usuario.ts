@@ -3,7 +3,6 @@ import { AllowNull, AutoIncrement, Column, DataType, HasOne, PrimaryKey, Table, 
 import { Nutricionista } from "../nutricionista/nutricionista";
 import { Model } from 'sequelize-typescript';
 import { Paciente } from "../paciente/paciente";
-import type { CreationOptional } from "sequelize";
 
 
 export enum TipoUsuario {
@@ -14,50 +13,43 @@ export enum TipoUsuario {
 @Table
 export class Usuario extends Model<Usuario> {
 
-    @PrimaryKey
-    @AutoIncrement
-    @Column({
-        type: DataType.INTEGER
-    })
-    declare id: CreationOptional<number>;
-
     @AllowNull(false)
     @Column({
         type: DataType.STRING
     })
-    nome!:string;
+    declare nome:string;
 
     @AllowNull(false)
     @Unique(true)
     @Column({
         type: DataType.STRING
     })
-    email!:string;
+    declare email:string;
 
     @AllowNull(false)
     @Unique(true)  //cpf deve ser único
     @Column({
      type: DataType.STRING(11)
     })
-    cpf!: string;
+    declare cpf: string;
 
     @AllowNull(false)
     @Column({
         type: DataType.STRING
     })
-    senha!:string;
+    declare senha:string;
 
     @AllowNull(false)
     @Column({
         type: DataType.ENUM(...Object.values(TipoUsuario)),
     })
-    tipoDeUsuario!: TipoUsuario;
+    declare tipoDeUsuario: TipoUsuario;
 
    
     @HasOne(() => Nutricionista)
-    nutricionista!: Nutricionista;
+    declare nutricionista: Nutricionista;
 
     @HasOne(() => Paciente)
-    paciente!: Paciente;
+    declare paciente: Paciente;
 
 }

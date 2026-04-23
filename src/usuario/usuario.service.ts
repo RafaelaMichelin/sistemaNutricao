@@ -7,19 +7,26 @@ import * as bcrypt from 'bcrypt';
 export class UsuarioService {
     constructor(
         @InjectModel(Usuario) private usuarioModel: typeof Usuario,
-    ){}
+    ) {}
 
     //criptografando senha
-    async create(createUsuarioDto: CreateUsuarioDto){
-    const usuarioData = {
-    ...createUsuarioDto,
-    senha: await bcrypt.hash(createUsuarioDto.senha, 10),
-    } as any;  // Ou InferCreationAttributes<Usuario>
+    async create(createUsuarioDto: CreateUsuarioDto) {
+        const usuarioData = {
+            ...createUsuarioDto,
+            senha: await bcrypt.hash(createUsuarioDto.senha, 10),
+        } as any;  // Ou InferCreationAttributes<Usuario>
 
-    const createdUsuario = await this.usuarioModel.create(usuarioData);
-    return{
-        ...createdUsuario,
-        senha: undefined,
-    };
-}
+        const createdUsuario = await this.usuarioModel.create(usuarioData);
+        return {
+            ...createdUsuario,
+            senha: undefined,
+        };
+    }
+
+    findByEmail(email: string) {
+        console.log('Procurando:', email);
+        return this.usuarioModel.findOne({
+            where: { email },
+        });
+    }
 }
