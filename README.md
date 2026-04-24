@@ -1,5 +1,6 @@
 # Sistema Nutrição - API Backend
 
+## Alunos: Rafaela, Ariele e Renan
 API desenvolvida com NestJS para gerenciamento de usuários(Paciente/Nutricionistas), com autenticação, validações e segurança de dados.
 
 ## Stack completa
