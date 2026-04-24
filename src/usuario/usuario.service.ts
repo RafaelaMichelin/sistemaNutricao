@@ -1,13 +1,17 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
-import { Usuario } from './usuario';
+import { TipoUsuario, Usuario } from './usuario';
 import { CreateUsuarioDto } from './dto/createUsuarioDto';
 import * as bcrypt from 'bcrypt';
 import { UpdateUsuarioDto } from './dto/updateUsuarioDto';
+import { Paciente } from '../paciente/paciente';
+import { Nutricionista } from '../nutricionista/nutricionista';
 @Injectable()
 export class UsuarioService {
     constructor(
         @InjectModel(Usuario) private usuarioModel: typeof Usuario,
+        @InjectModel(Paciente) private pacienteModel: typeof Paciente,  // 👈
+        @InjectModel(Nutricionista) private nutricionistaModel: typeof Nutricionista
     ) {}
 
     //criptografando senha
@@ -15,14 +19,42 @@ export class UsuarioService {
         const usuarioData = {
             ...createUsuarioDto,
             senha: await bcrypt.hash(createUsuarioDto.senha, 10),
-            tipo: createUsuarioDto.tipoDeUsuario
-        } as any;  // Ou InferCreationAttributes<Usuario>
+            tipo: createUsuarioDto.tipoDeUsuario,
+            
+           
+        } as any; 
 
         const createdUsuario = await this.usuarioModel.create(usuarioData);
+
+
+        //PACIENTE
+         if (createUsuarioDto.tipoDeUsuario === TipoUsuario.PACIENTE) {
+        const pacienteData = {
+            usuarioId: createdUsuario.id, 
+            altura: Number(createUsuarioDto.altura),
+            dataNascimento: createUsuarioDto.dataNascimento,
+            objetivo: createUsuarioDto.objetivo,
+        } as any;
+        await this.pacienteModel.create(pacienteData);
+    }
+
+    //NUTRICIONISTA
+         if (createUsuarioDto.tipoDeUsuario === TipoUsuario.NUTRICIONISTA) {
+            const nutriData = {
+                usuarioId: createdUsuario.id,
+                crn: createUsuarioDto.crn,
+                especialidade: createUsuarioDto.especialidade,
+                disponibilidade: createUsuarioDto.disponibilidade,
+            } as any;
+            await this.nutricionistaModel.create(nutriData);
+        }
+
         return {
             ...createdUsuario,
             senha: undefined,
         };
+
+        
     }
 
     findByEmail(email: string) {

@@ -1,5 +1,6 @@
-import { IsEmail, IsEnum, IsString, Matches, MaxLength, MinLength } from "class-validator";
+import { IsDateString, IsEmail, IsEnum, IsNumber, IsString, Matches, MaxLength, MinLength, ValidateIf } from "class-validator";
 import { TipoUsuario, Usuario } from "../usuario";
+import { StatusDisponibilidade } from "../../nutricionista/nutricionista";
 
 //Dto: Validações de entrada de dados
 export class CreateUsuarioDto{
@@ -28,5 +29,30 @@ email!:string;
 
   @IsEnum(TipoUsuario)
   tipoDeUsuario!: TipoUsuario;
+  //Aplicando validação de tipos de usuários 
+  //PACIENTE
+  @ValidateIf(o => o.tipoDeUsuario === TipoUsuario.PACIENTE)
+  @IsNumber({}, { message: 'Altura deve ser decimal' })
+  altura?:number;
 
+  @ValidateIf(o=>o.tipoDeUsuario === TipoUsuario.PACIENTE)
+  @IsDateString({}, {message: 'Data de nascimento inválida' })
+  dataNascimento!: string;
+
+   @ValidateIf(o => o.tipoDeUsuario === TipoUsuario.PACIENTE)
+   @IsString({})
+   objetivo!:string;
+
+   //NUTRICIONISTA
+   @ValidateIf(o => o.tipoDeUsuario === TipoUsuario.NUTRICIONISTA)
+   @IsString({ message: 'CRN é obrigatória'})
+   crn!: string;
+
+   @ValidateIf(o => o.tipoDeUsuario === TipoUsuario.NUTRICIONISTA)
+   @IsString()
+   especialidade?: string;
+
+   @ValidateIf(o => o.tipoDeUsuario === TipoUsuario.NUTRICIONISTA)
+   @IsEnum(StatusDisponibilidade, { message: 'Disponibilidade inválida' })
+   disponibilidade!: StatusDisponibilidade;
 }
