@@ -121,9 +121,10 @@ Cada parte deve ser executada separadamente em seu respectivo diretório.
 ### 3. Configure variáveis de ambiente .env
 ```
 DB_HOST=localhost
+DB_PORT=3306
 DB_USER=root
-DB_PASS=suasenha
-DB_NAME=nutri
+DB_PASSWORD=suasenha
+DB_DATABASE=nutri
 
 JWT_SECRET=suaChave
 JWT_EXPIRES=1d
