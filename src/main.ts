@@ -21,7 +21,7 @@ async function bootstrap() {
     
   //LIBERAR CORS 
      app.enableCors({
-      origin: 'localhost:3000', //URL DO FRONT-END
+      origin: 'http://localhost:3001', //URL DO FRONT-END
       methods: ['GET', 'POST']  //MÉTODOS QUE SERÃO LIBERADORS PARA O FRONT
 });
     // Pipes
