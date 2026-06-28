@@ -1,21 +1,42 @@
-# Sistema Nutrição - API Backend
+# Sistema Nutrição - Projeto Full Stack
 
-## Alunos: Rafaela, Ariele e Renan
-API desenvolvida com NestJS para gerenciamento de usuários(Paciente/Nutricionistas), com autenticação, validações e segurança de dados.
+O Sistema de Nutrição é um projeto full-stack composto por uma API REST desenvolvida em NestJS e um frontend em Next.js, responsável pela interface do usuário.
 
-## Stack completa
+O sistema permite o gerenciamento de usuários (Pacientes e Nutricionistas), incluindo autenticação, validações e controle de dados.
+
+## Backend(API)
 * ` NestJS ` +  `TypeScript` + `Node.js`
-* `Sequelize` + `MySQL`
-* `Jwt Auth`
-* `bcrypt(senhas)`
+* `Sequelize ORM` + `MySQL`
+* `Jwt (Autenticação)`
+* `bcrypt(criptografia de senhas)`
 * `class-validator + DTOs`
+* `Swagger(documentação e testes)`
+* `Cors habilitado`
 ---
 
-## Arquitetura (Tabelas)
+## Modelo de Dados
 ```
-usuarios (nome, email, senha, tipoDeUsuario, cpf)
-├── pacientes (usuarioId FK + dataNascimento, altura, objetivo)
-└── nutricionistas (usuarioId FK + crn, especialidade, disponibilidade)
+usuarios
+├── id
+├── nome
+├── email
+├── senha
+├── cpf
+└── tipoDeUsuario
+
+pacientes
+├── id
+├── usuarioId (FK)
+├── dataNascimento
+├── altura
+└── objetivo
+
+nutricionistas
+├── id
+├── usuarioId (FK)
+├── crn
+├── especialidade
+└── disponibilidade
 ```
 ## DTOs e validações
 
@@ -25,7 +46,7 @@ usuarios (nome, email, senha, tipoDeUsuario, cpf)
 - Email válido (`@IsEmail`)
 - Senha forte (`@MinLength`,`@MaxLength`, `@Matches`)
 - CPF com 11 dígitos (`@Matches`)
-- Nome obrigatório
+- Nome obrigatório(`IsEnum`)
 - Tipo de usuário (`@IsEnum`) (`@ValidateIf()`)
 
 ### UpdateUsuarioDto
@@ -58,20 +79,80 @@ DELETE /usuarios/delete
 > O sistema utiliza autenticação baseada em JSON Web Token (JWT) para garantir segurança no acesso às rotas protegidas. Após o login, o usuário recebe um token que deve ser enviado nas requisições para acessar recursos protegidos da API.
 ---
 
-## Instalação e Execução 
-### 1. Clone o repositório
-git clone https://github.com/RafaelaMichelin/sistemaNutricao.git
+## Documentação da API (Swagger)
 
-cd sistema-nutri
+A API possui documentação interativa gerada com **Swagger**, permitindo visualizar e testar todos os endpoints diretamente pelo navegador.
+
+Acesse a documentação: http://localhost:3000/api-swagger
+
+---
+## Frontend
+
+O frontend do projeto foi desenvolvido com **Next.js**, utilizando uma arquitetura moderna baseada em React para construção da interface do usuário.
+
+Ele é responsável por toda a camada visual e interação com o usuário, consumindo diretamente a API backend via requisições HTTP.
+
+### Tecnologias
+* `NextJS`
+* `Tailwind CSS`
+* `ESLint(padronização de código)`
+
+### Estrutura e Arquitetura
+
+O frontend utiliza a estrutura padrão do **Next.js App Router**, permitindo:
+
+- Renderização otimizada (SSR/CSR)
+- Organização baseada em rotas
+- Componentização reutilizável
+- Estilização com Tailwind CSS
+
+---
+
+## Instalação e Execução 
+O projeto é dividido em duas partes: **backend (NestJS)** e **frontend (Next.js)**.  
+Cada parte deve ser executada separadamente em seu respectivo diretório.
+
+### 1. Clone o repositório
+`git clone https://github.com/RafaelaMichelin/sistemaNutricao.git`
 
 ### 2. Instale dependências
-npm install
+`npm install`
 
-### 3. Configure .env
+### 3. Configure variáveis de ambiente .env
+```
+DB_HOST=localhost
+DB_USER=root
+DB_PASS=suasenha
+DB_NAME=nutri
 
-Edite .env com suas credenciais MySQL
+JWT_SECRET=suaChave
+JWT_EXPIRES=1d
+```
 
-### 4. Inicie servidor
-npm run start:dev
+### 4. Executar o servidor(Backend)
+Acesse a pasta Raiz do projeto
+  
+`cd sistemaNutricao`
 
+Execute
 
+`npm run start:dev`
+
+### 5. Execute o Frontend
+
+Acesse a Pasta do Frontend
+
+`cd sistemaNutricao/frontend`
+
+ Instale as dependências
+
+  `npm install`
+  
+ Execute
+
+  `npm run dev`
+
+O Frontend ficará disponível em http://localhost:3001
+
+---
+### Autores: Rafaela Michelin, Renan Bernardes e Ariele Cohen
